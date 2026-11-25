@@ -109,6 +109,9 @@ plus the theme's own suite and shared workspace suite when present. Package name
 can be full Composer names or unique short names.
 
 `run` defaults to unit tests and starts PHPUnit in a **separate PHP process**.
+It uses PHPUnit's TestDox output to show named tests with pass/fail results,
+followed by the normal test/assertion summary. Subprocess output streams without
+adding extra line breaks.
 It prefers the installed `tools/testing` runner and its bootstrap, so local
 packages share one dependency runtime. Otherwise it looks for a runner in the
 selected repository or active theme. Missing configurations/dependencies and
