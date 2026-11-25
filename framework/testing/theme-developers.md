@@ -17,6 +17,9 @@ The Meros workspace has a development-only Composer project under
 CRM, Blocks and Email Connectors and does not change the theme's dependency
 lockfile.
 
+Commit the shared runner's manifest and lockfile for reproducible dependency
+installs; keep its installed dependencies and PHPUnit caches out of Git.
+
 Inside the devcontainer, install the shared runner and official WordPress test
 sources:
 

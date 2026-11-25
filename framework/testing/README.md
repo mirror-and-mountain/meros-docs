@@ -108,6 +108,11 @@ wp meros:test run meros-crm --suite=integration --filter=PackageBootTest
 plus the theme's own suite and shared workspace suite when present. Package names
 can be full Composer names or unique short names.
 
+Release archives exclude each repository's own tests, PHPUnit configurations and
+CI workflows. Use a source checkout or local path install to run a package's own
+suite. Foundations and Framework still export `src/Testing/`, so consuming themes
+and packages can use the reusable testing classes with their own suites.
+
 `run` defaults to unit tests and starts PHPUnit in a **separate PHP process**.
 It uses PHPUnit's TestDox output to show named tests with pass/fail results,
 followed by the normal test/assertion summary. Subprocess output streams without
