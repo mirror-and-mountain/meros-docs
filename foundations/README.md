@@ -38,6 +38,11 @@ Storage resolves to the theme's `storage/` directory when it exists, otherwise `
 
 Console bootstrapping binds a synthetic request using `app.url` before providers load, so request-dependent services are available to WP-CLI commands.
 
+Run `wp meros` to list the currently registered Meros commands, including commands
+provided by the Framework and packages. Existing colon-style commands are unchanged.
+Use `wp help meros:install` (or another listed command) for its subcommands, options
+and examples.
+
 | Command | Subcommands / options |
 | --- | --- |
 | `wp meros:cache` | `clear [--store]`, `forget <key>` |
