@@ -20,6 +20,13 @@ lockfile.
 Commit the shared runner's manifest and lockfile for reproducible dependency
 installs; keep its installed dependencies and PHPUnit caches out of Git.
 
+The Framework's theme sync script excludes repository tests, PHPUnit XML
+configurations/caches and the development-only `tools/testing/` runner from
+deployment transfers, including tests within first-party package checkouts.
+Reusable `src/Testing/` classes remain included. Both local-to-remote and staged
+remote-to-remote transfers use these exclusions; their existing deletion
+behavior is unchanged.
+
 Inside the devcontainer, install the shared runner and official WordPress test
 sources:
 
