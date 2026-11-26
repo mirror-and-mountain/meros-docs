@@ -5,6 +5,7 @@
 ## Contents
 
 - [Using integrations](#using-integrations)
+- [Integration configuration](#integration-configuration)
 - [OAuth connection settings](#oauth-connection-settings)
 - [Package-specific guides](#package-specific-guides)
 
@@ -36,6 +37,30 @@ integration with its own prerequisites. The base implementation checks only the
 enabled state and rejects unsupported capabilities. A readiness check is
 side-effect-free apart from reading settings and connections; API failures should
 still be logged and surfaced according to the integration's return contract.
+
+## Integration configuration
+
+Theme configuration can override package defaults in `config/integrations.php`:
+
+```php
+return [
+    'meros_email_connectors_mailchimp' => [
+        'force_enabled' => true,
+    ],
+];
+```
+
+`force_enabled` forces the integration on and disables its enable switch in
+wp-admin without changing the saved switch value. Removing it restores the saved
+state. It does not configure credentials or guarantee that the integration is ready.
+Mailchimp's default `allow_configuration` is `true`, so its settings remain
+editable in wp-admin.
+
+For an integration with multiple environments, set
+`'allow_environment_switching' => false` to disable the wp-admin environment
+selector and reject environment switch requests. The current saved environment
+is retained; `site_environment` supplies the default when none is saved.
+Temporary environment selection by the integration CLI is unaffected.
 
 ## OAuth connection settings
 

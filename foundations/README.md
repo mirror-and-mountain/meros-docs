@@ -27,7 +27,7 @@ MM\Meros\Foundations\Foundations::boot(get_stylesheet_directory(), $providers, $
 - **Views** – Blade resolution ported from Acorn: namespace hints with theme `vendor/` overrides, `view.directives|components|composers`, auto-discovered `app/View/Composers`.
 - **Queue, auth, hashing, bus** – database/sync queues with `Artisan::call('queue:work')`, session/Eloquent auth and the password broker. `Illuminate\Foundation\Auth\User` resolves to `MM\Meros\Foundations\Auth\User`, so packages written against Laravel keep working. Config stubs: `auth`, `queue`.
 - **Package discovery** – `PackageManifest` scans the theme, content root and `meros/composer_paths` filter two lists: `extra.laravel.providers` (Laravel packages such as Livewire, registered by Foundations) and `extra.meros.provider`/`providers` (Meros packages, registered by the framework once its provider is up). `dont-discover` is honoured under either key. The cache rebuilds itself whenever a `composer.json` or `installed.json` is newer, so no composer hook is needed.
-- **WordPress runtime** – request capture and the `wordpress` catch-all route.
+- **WordPress runtime** – request capture and the `wordpress` catch-all route. Route name and controller-action lookups are refreshed after providers boot, so fluent route definitions from themes and packages support URL generation and redirects.
 - **Compatibility helpers** – container, config, request and response helpers; `now()` uses Illuminate's date factory, including timezone overrides and frozen test clocks.
 
 ## Paths and storage

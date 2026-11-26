@@ -18,6 +18,10 @@ A Salesforce-focused CRM package for the Meros framework.
 
 This package owns Salesforce-specific integrations, external models, and form actions.
 
+Configure Salesforce **Queryable Objects** and **Automated Flows** in wp-admin for
+each environment. These settings remain editable even when other integration
+settings are managed in configuration files; config values for them are ignored.
+
 ## Salesforce readiness
 
 Use `Integrations::connect('salesforce')->ready()` to check whether Salesforce is
