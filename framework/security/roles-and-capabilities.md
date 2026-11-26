@@ -9,7 +9,7 @@
 
 ## Managing permissions
 
-The Security > Manage Permissions page displays a capability-by-role matrix. Users cannot create roles or capability definitions through the interface. Administrator is read-only. Other built-in roles can have their WordPress capabilities edited and can be hidden from new role-assignment selectors. Existing assignments and capabilities are not changed when a role is hidden.
+The Security > Manage Permissions page displays a capability-by-role matrix. Users cannot create roles or capability definitions through the interface. Administrator is read-only. Other built-in roles can have their WordPress capabilities and opted-in code-defined capabilities edited, and can be hidden from new role-assignment selectors. Existing assignments and capabilities are not changed when a role is hidden.
 
 The WordPress section includes the primitive capabilities assigned by core's default role setup, including legacy `level_*` capabilities. These can also be granted to custom roles that opt in with `userConfigurable()`, even when the role did not declare them in its defaults. The catalogue is independent of current role assignments, so removing a capability does not remove its row. Context-dependent meta capabilities (such as `edit_post`) are not role grants and are not listed.
 
@@ -30,6 +30,7 @@ class ManageReports extends Capability {
         $this->description('View and manage reports.');
         $this->roles(['editor']);
         $this->userConfigurable();
+        $this->assignableToDefaultRoles();
     }
 }
 
@@ -53,6 +54,10 @@ $this->capabilities(ManageReports::class)->make();
 $this->roles(ReportsEditor::class)->make();
 ```
 
-Role capabilities default to the values declared by the theme/package. For theme/package-defined capabilities, a checkbox is editable only when the role declares that capability and both the role and capability call `userConfigurable()`. Core WordPress capabilities require only the custom role's opt-in. User changes are stored through the framework-owned `MerosRoleSettings` settings container and applied when WordPress initializes the role. `Role::resolveSettingsContainer()` resolves this container through the settings-container register, following the same lazy resolution pattern as blocks. Its underlying option remains `meros_role_settings`, with `hidden_default_roles` and `role_capabilities` settings, so previously saved permissions are preserved. Theme/package-defined capabilities not opted in remain code-controlled.
+Role capabilities default to the values declared by the theme/package. For custom roles, a theme/package-defined checkbox is editable only when the role declares that capability and both the role and capability call `userConfigurable()`. Core WordPress capabilities require only the custom role's opt-in. For built-in roles other than Administrator, a code-defined capability must call both `userConfigurable()` and `assignableToDefaultRoles()`. This separate opt-in preserves the restrictions on existing capabilities and does not change default grants.
 
-Every registered capability is automatically granted to the Administrator role. Use `roles([...])` on a capability to also grant it to one or more other built-in WordPress roles. These assignments are theme/package-defined and shown read-only in the permissions interface.
+User changes are stored through the framework-owned `MerosRoleSettings` settings container and applied when WordPress initializes roles. `Role::resolveSettingsContainer()` resolves this container through the settings-container register, following the same lazy resolution pattern as blocks. Its underlying option remains `meros_role_settings`, with `hidden_default_roles` and `role_capabilities` settings, so previously saved permissions are preserved. Theme/package-defined capabilities not opted in remain code-controlled.
+
+Every registered capability is automatically granted to the Administrator role. Use `roles([...])` on a capability to also grant it to one or more other built-in WordPress roles by default. These default grants are read-only unless the capability opts into configuration and default-role assignments. Saved grants and revocations are applied after defaults on each request.
+
+The four form capabilities (`read_forms`, `edit_forms`, `read_form_responses` and `edit_form_responses`) opt into default-role assignments. This lets users grant the permissions represented by Form Reader or Form Manager to Editor, Author, Contributor or Subscriber without changing those users' roles. The named custom roles retain their declared capability restrictions.
